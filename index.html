@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Valentine's 🌸</title>
+
+<style>
+/* FULLSCREEN ENVELOPE OVERLAY */
+.envelope-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000; /* dark background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  flex-direction: column;
+  color: white;
+}
+
+.envelope-big {
+  width: 300px;
+  height: 200px;
+  background: #ff4d6d;
+  position: relative;
+  border-radius: 15px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.flap-big {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #ff758f;
+  transform-origin: top;
+  transition: transform 1s;
+}
+
+.envelope-big.open .flap-big {
+  transform: rotateX(180deg);
+}
+
+.envelope-label {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 80px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* rest of the website styles */
+body {
+  margin:0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.flowers-img {
+  width: 200px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+  animation: bounce 1.5s infinite;
+}
+
+.card {
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  max-width:420px;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+  animation:fadeIn 1.2s ease;
+}
+
+.hidden {
+  display:none;
+}
+
+h1 {
+  color:#ff4d6d;
+}
+
+p {
+  font-size:18px;
+  line-height:1.6;
+}
+
+button {
+  margin-top:20px;
+  padding:10px 20px;
+  border:none;
+  border-radius:10px;
+  background:#ff4d6d;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+}
+
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(20px);}
+  to {opacity:1; transform:translateY(0);}
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- FULL PAGE ENVELOPE -->
+<div class="envelope-overlay" id="envelopeOverlay">
+  <div class="envelope-big" id="bigEnvelope" onclick="openEnvelope()">
+    <div class="flap-big"></div>
+    <div class="envelope-label">Click to Open 💌</div>
+  </div>
+  <p style="margin-top:20px;">A letter just for you...</p>
+</div>
+
+<!-- FLOWERS SCREEN -->
+<div class="card hidden" id="flowersScreen">
+  <img src="download.png" class="flowers-img">
+  <h1>Flowers for you 🌸</h1>
+  <p>something special for you…</p>
+  <button onclick="showLetter()">Click to Open 💌</button>
+</div>
+
+<!-- LETTER SCREEN -->
+<div class="card hidden" id="letterScreen">
+  <h1>Happy Valentine's Baby❤️</h1>
+  <p>
+   I just want to say that our relationship hasn’t always been the smoothest, but we always find a way to make it work. I know that in our four years together, it hasn’t been easy — we’ve had our doubts, disagreements, and misunderstandings — but what truly matters is that we continue to choose each other despite everything.
+   <br><br>
+   Thank you for choosing to stay and for continuing to love me through it all. I want to celebrate this day as a reminder that we never gave up in the past, and we won’t give up now. I will always choose you. I love you! ❤️
+  </p>
+</div>
+
+<script>
+function openEnvelope() {
+  const overlay = document.getElementById("envelopeOverlay");
+  const envelope = document.getElementById("bigEnvelope");
+
+  envelope.classList.add("open"); // flap rotates
+
+  setTimeout(() => {
+    overlay.style.transition = "opacity 0.8s";
+    overlay.style.opacity = "0";
+  }, 1000);
+
+  setTimeout(() => {
+    overlay.style.display = "none";
+    document.getElementById("flowersScreen").classList.remove("hidden");
+  }, 1800);
+}
+
+function showLetter() {
+  document.getElementById("flowersScreen").classList.add("hidden");
+  document.getElementById("letterScreen").classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
