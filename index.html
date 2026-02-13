@@ -152,17 +152,23 @@ button {
 <audio id="bgMusic" src="invisible.mp3" loop></audio>
 
 <script>
-// OPEN ENVELOPE
 function openEnvelope() {
   const overlay = document.getElementById("envelopeOverlay");
   const envelope = document.getElementById("bigEnvelope");
   const music = document.getElementById("bgMusic");
 
   envelope.classList.add("open"); // flap rotates
+
   setTimeout(() => {
     overlay.style.transition = "opacity 0.8s";
     overlay.style.opacity = "0";
-    music.play(); // start music
+
+    // ✅ play music safely on mobile
+    music.muted = true; // temporarily mute
+    music.play().then(() => {
+      music.muted = false; // unmute after play starts
+    }).catch(err => console.log('Music failed to play:', err));
+
   }, 1000);
 
   setTimeout(() => {
@@ -198,5 +204,7 @@ function startPetals() {
 }
 </script>
 
+
 </body>
 </html>
+
