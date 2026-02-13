@@ -13,7 +13,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: #000; /* dark background */
+  background: #000;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -55,7 +55,7 @@
   font-size: 20px;
 }
 
-/* rest of the website styles */
+/* GENERAL SITE STYLES */
 body {
   margin:0;
   font-family: Arial, sans-serif;
@@ -64,6 +64,7 @@ body {
   justify-content:center;
   align-items:center;
   height:100vh;
+  overflow: hidden;
 }
 
 .flowers-img {
@@ -81,21 +82,14 @@ body {
   text-align:center;
   box-shadow:0 10px 25px rgba(0,0,0,0.2);
   animation:fadeIn 1.2s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.hidden {
-  display:none;
-}
+.hidden { display:none; }
 
-h1 {
-  color:#ff4d6d;
-}
-
-p {
-  font-size:18px;
-  line-height:1.6;
-}
-
+h1 { color:#ff4d6d; }
+p { font-size:18px; line-height:1.6; }
 button {
   margin-top:20px;
   padding:10px 20px;
@@ -107,14 +101,20 @@ button {
   cursor:pointer;
 }
 
-@keyframes fadeIn {
-  from {opacity:0; transform:translateY(20px);}
-  to {opacity:1; transform:translateY(0);}
+/* ANIMATIONS */
+@keyframes fadeIn { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+@keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-20px);} }
+@keyframes fall {
+  0% { transform: translateY(-10%); opacity: 1; }
+  100% { transform: translateY(110vh); opacity: 0; }
 }
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+.petals {
+  position: absolute;
+  font-size: 20px;
+  top: -50px;
+  z-index: 5;
+  pointer-events: none;
+  animation: fall linear infinite;
 }
 </style>
 </head>
@@ -142,33 +142,59 @@ button {
 <div class="card hidden" id="letterScreen">
   <h1>Happy Valentine's Baby❤️</h1>
   <p>
-   I just want to say that our relationship hasn’t always been the smoothest, but we always find a way to make it work. I know that in our four years together, it hasn’t been easy — we’ve had our doubts, disagreements, and misunderstandings — but what truly matters is that we continue to choose each other despite everything.
-   <br><br>
+   Happy Valentine’s Day, baby! ❤️<br><br>
+   I just want to say that our relationship hasn’t always been the smoothest, but we always find a way to make it work. I know that in our four years together, it hasn’t been easy — we’ve had our doubts, disagreements, and misunderstandings — but what truly matters is that we continue to choose each other despite everything.<br><br>
    Thank you for choosing to stay and for continuing to love me through it all. I want to celebrate this day as a reminder that we never gave up in the past, and we won’t give up now. I will always choose you. I love you! ❤️
   </p>
 </div>
 
+<!-- BACKGROUND MUSIC -->
+<audio id="bgMusic" src="invisible.mp3" loop></audio>
+
 <script>
+// OPEN ENVELOPE
 function openEnvelope() {
   const overlay = document.getElementById("envelopeOverlay");
   const envelope = document.getElementById("bigEnvelope");
+  const music = document.getElementById("bgMusic");
 
   envelope.classList.add("open"); // flap rotates
-
   setTimeout(() => {
     overlay.style.transition = "opacity 0.8s";
     overlay.style.opacity = "0";
+    music.play(); // start music
   }, 1000);
 
   setTimeout(() => {
     overlay.style.display = "none";
     document.getElementById("flowersScreen").classList.remove("hidden");
+    startPetals(); // start falling petals
   }, 1800);
 }
 
+// SHOW LETTER
 function showLetter() {
   document.getElementById("flowersScreen").classList.add("hidden");
   document.getElementById("letterScreen").classList.remove("hidden");
+  startPetals();
+}
+
+// PETALS
+function startPetals() {
+  const screens = ['flowersScreen','letterScreen'];
+  screens.forEach(screenId => {
+    const screen = document.getElementById(screenId);
+    for(let i=0; i<15; i++) {
+      const petal = document.createElement('div');
+      petal.className = 'petals';
+      petal.innerText = '🌸';
+      petal.style.left = Math.random() * 100 + '%';
+      petal.style.animationDuration = 4 + Math.random() * 3 + 's';
+      petal.style.fontSize = 15 + Math.random() * 20 + 'px';
+      screen.appendChild(petal);
+      setTimeout(()=>petal.remove(),7000);
+    }
+  });
 }
 </script>
 
